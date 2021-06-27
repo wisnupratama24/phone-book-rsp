@@ -1,13 +1,13 @@
 import axios from "axios"
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, RouteComponentProps } from "react-router-dom"
 import { Add } from "../../assets"
 import { Navbar } from "../../components"
 import { ADD_CONTACT_PATH } from "../../constants/Routes"
 import { getCookie } from "../../helpers/auth"
-import { allContact } from "../../redux/slice/Contact"
-import Content from "./Content"
+import { allContact, selecContact } from "../../redux/slice/Contact"
+import { Contact } from "./contact"
 
 export interface IContact {
     contact: {
@@ -23,6 +23,9 @@ export interface IContact {
 }
 
 const Home: React.FC<RouteComponentProps> = (props) => {
+    const selectContact = useSelector(selecContact);
+    const contactData = selectContact.contact?.data;
+
     const token = getCookie('token');
     const dispatch = useDispatch();
 
@@ -36,9 +39,12 @@ const Home: React.FC<RouteComponentProps> = (props) => {
             });
 
             const data = await addFavorite(res.data.data);
-            dispatch(allContact({
-                data
-            }));
+            if (contactData == null) {
+                dispatch(allContact({
+                    data
+                }));
+
+            }
 
         } catch (error) {
             dispatch(allContact({ data: [] }));
@@ -70,7 +76,12 @@ const Home: React.FC<RouteComponentProps> = (props) => {
                 </div>
             </div>
             <div className="p-5" id="home">
-                <Content />
+                <div className="wrapper flex justify-between px-4">
+                    <Contact contactData={contactData} />
+                    <div className="detail-contact flex-1">
+
+                    </div>
+                </div>
             </div>
         </div>
     )
