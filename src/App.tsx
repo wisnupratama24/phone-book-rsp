@@ -16,7 +16,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="bg-grayBackground min-h-screen h-full">
       <Router>
         <Switch>
           <ProtectedRoute exact={true} isCan={isAuthState} component={HomePage} path={HOME_PATH} to={SIGNIN_PATH} />
@@ -27,7 +27,7 @@ function App() {
           <Route path="*" component={Page404} />
         </Switch>
       </Router>
-    </>
+    </div>
   );
 }
 

@@ -29,6 +29,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
     const token = getCookie('token');
     const dispatch = useDispatch();
 
+    console.log(contactData);
 
     async function getContact() {
         try {
@@ -39,11 +40,10 @@ const Home: React.FC<RouteComponentProps> = (props) => {
             });
 
             const data = await addFavorite(res.data.data);
-            if (contactData == null) {
+            if (contactData === undefined) {
                 dispatch(allContact({
                     data
                 }));
-
             }
 
         } catch (error) {
@@ -63,7 +63,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
     }, []);
 
     return (
-        <div className="bg-grayBackground h-screen">
+        <>
             <Navbar />
             <div className="p-5">
                 <div className="md:w-2/12 w-auto">
@@ -83,7 +83,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
