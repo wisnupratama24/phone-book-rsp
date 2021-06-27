@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import { SetStateAction, useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { ProtectedRoute } from './components';
+import { HOME_PATH, SIGNIN_PATH, SIGNUP_PATH } from './constants/Routes';
+import { isAuth } from './helpers/auth';
+import { HomePage, Page404, SignInPage, SignUpPage } from './pages';
+
 
 function App() {
+  const [isAuthState, setIsAuthState] = useState<SetStateAction<boolean | null>>(null);
+
+  useEffect(() => {
+    const checkedAuth = isAuth() ?? null;
+    setIsAuthState(checkedAuth);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Switch>
+          <ProtectedRoute exact={true} isCan={isAuthState} component={HomePage} path={HOME_PATH} to={SIGNIN_PATH} />
+          <ProtectedRoute exact={false} isCan={!isAuthState} component={SignInPage} path={SIGNIN_PATH} to={HOME_PATH} />
+          <ProtectedRoute exact={false} isCan={!isAuthState} component={SignUpPage} path={SIGNUP_PATH} to={HOME_PATH} />
+          <Route path="*" component={Page404} />
+        </Switch>
+      </Router>
+    </>
   );
 }
 
