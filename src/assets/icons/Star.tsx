@@ -18,8 +18,8 @@ const Star: React.FC<ISvg> = (props) => {
         const filt: any = contactData.data?.filter((e: any) => e.id === id)[0];
         const x = { ...filt };
         x.favorite = !x.favorite;
-        const filt2: any = contactData.data?.filter((e: any) => e.id !== id)[0];
-        const y: any = [x, filt2];
+        const filt2: any = contactData.data?.filter((e: any) => e.id !== id);
+        const y: any = [x, ...filt2];
         dispatch(allContact({
             data: y
         }));

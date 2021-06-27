@@ -1,8 +1,10 @@
 import axios from "axios"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { RouteComponentProps } from "react-router-dom"
+import { Link, RouteComponentProps } from "react-router-dom"
+import { Add } from "../../assets"
 import { Navbar } from "../../components"
+import { ADD_CONTACT_PATH } from "../../constants/Routes"
 import { getCookie } from "../../helpers/auth"
 import { allContact } from "../../redux/slice/Contact"
 import Content from "./Content"
@@ -23,6 +25,7 @@ export interface IContact {
 const Home: React.FC<RouteComponentProps> = (props) => {
     const token = getCookie('token');
     const dispatch = useDispatch();
+
 
     async function getContact() {
         try {
@@ -56,6 +59,16 @@ const Home: React.FC<RouteComponentProps> = (props) => {
     return (
         <div className="bg-grayBackground h-screen">
             <Navbar />
+            <div className="p-5">
+                <div className="md:w-2/12 w-auto">
+                    <Link to={ADD_CONTACT_PATH}>
+                        <div className="flex gap-x-5 ml-4">
+                            <img src={Add} alt="icon add" />
+                            <p className="text-xl">Add Contact</p>
+                        </div>
+                    </Link>
+                </div>
+            </div>
             <div className="p-5" id="home">
                 <Content />
             </div>
